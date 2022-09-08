@@ -23,7 +23,6 @@ export function CasinoGame() {
   const bettingGrids = new Array(3).fill(0).map((v, i) => <BettingGrid
     position={[-300 + i * 250,-200, -100]} key={i}/>);
 
-
   return <>
     {/*// @ts-ignore*/}
     <Plane scale={[3000,3000,3000]} position={[0,-500,-500]} rotation={[-Math.PI / 2,0,0]}>
@@ -38,7 +37,7 @@ export function CasinoGame() {
       zoom={1}
       far={10000}
       near={-10000}
-      position={[0, 0, 100]}
+      position={[-62, 42, 65]}
     >
       {bettingGrids}
       {showLight ? <pointLight
