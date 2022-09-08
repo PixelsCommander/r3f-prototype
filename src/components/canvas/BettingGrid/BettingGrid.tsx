@@ -49,7 +49,9 @@ const CrazyCube = ({x, y}) => {
   useFrame(() => {
     if (showAnimations) {
       // @ts-ignore
-      mesh.current.position.y = Math.sin(Date.now() / 1000) * 50 * y / x;
+      const lx = x + 1;
+      const ly = y + 1;
+      mesh.current.position.y = (Math.sin(Date.now() / 1000) + 1) * 100 * ly / lx + 20;
     }
   })
 
@@ -58,7 +60,7 @@ const CrazyCube = ({x, y}) => {
     position={[0, 0, 0]}
     ref={mesh}
   >
-    <a.meshStandardMaterial attach="material" color={"black"} />
+    <a.meshStandardMaterial attach="material" color={"white"} />
     <boxBufferGeometry args={[itemSize / 1.5, 10, 10]}/>
   </a.mesh>
 }
