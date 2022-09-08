@@ -1,4 +1,4 @@
-import { Sprite } from 'three';
+import { Sprite, Mesh } from 'three';
 import {useEffect, useMemo, useRef, useState} from "react";
 import { useSpring } from '@react-spring/core';
 import { a } from "@react-spring/three";
@@ -9,15 +9,6 @@ import {useFrame} from "@react-three/fiber";
 import {useAnimatedSprite} from "use-animated-sprite";
 
 const itemSize = 30;
-
-function getItemState(x, y, state) {
-  if (state[x] !== undefined && state[x][y] !== undefined) {
-    return state[x][y];
-  } else {
-    return ItemState.Off;
-  }
-}
-
 
 export function BettingGrid({position = [0, 0 , 0], scale = [1, 1, 1], rotation = [0, 0, 0], width = 4, height = 4}) {
   const itemsFlat = [];
@@ -42,13 +33,11 @@ export function BettingGrid({position = [0, 0 , 0], scale = [1, 1, 1], rotation 
 
 
 const CrazyCube = ({x, y}) => {
-  const mesh = useRef();
-  // @ts-ignore
+  const mesh = useRef<Mesh>();
   const {showAnimations} = useGameStore((state) => state.state);
 
   useFrame(() => {
-    if (showAnimations) {
-      // @ts-ignore
+    if (showAnimations && mesh.current) {
       const lx = x + 1;
       const ly = y + 1;
       mesh.current.position.y = (Math.sin(Date.now() / 1000) + 1) * 100 * ly / lx + 20;
@@ -66,16 +55,12 @@ const CrazyCube = ({x, y}) => {
 }
 
 const BettingGridItem = ({x, y}) => {
-  // @ts-ignore
   const state = useGameStore(state => state.state.bettingState[x][y]);
-  // @ts-ignore
   const setBettingState = useGameStore(state => state.setBettingState);
-  // @ts-ignore
   const showAnimations = useGameStore((state) => state.state.showAnimations)
-  // @ts-ignore
   const showSprites = useGameStore((state) => state.state.showSprites)
   const spriteTexture = useTexture('./icons/multiplier.webp');
-  const mesh = useRef();
+  const mesh = useRef<Mesh>();
   const [hovered, setHover] = useState(false);
 
   const { spring } = useSpring( {
